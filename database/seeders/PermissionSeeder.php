@@ -22,6 +22,7 @@ class PermissionSeeder extends Seeder
         $create_customers = Permission::create(['name' => 'create customers']);
         $update_customers = Permission::create(['name' => 'update customers']);
         $create_projects = Permission::create(['name' => 'create projects']);
+        $update_projects = Permission::create(['name' => 'update projects']);
         $update_own_projects = Permission::create(['name' => 'update own projects']);
         $manage_tasks = Permission::create(['name' => 'manage own tasks']);
         $assign_tasks = Permission::create(['name' => 'assign tasks']);

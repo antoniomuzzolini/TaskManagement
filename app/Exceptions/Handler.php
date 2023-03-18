@@ -2,9 +2,9 @@
 
 namespace App\Exceptions;
 
-use Dotenv\Exception\ValidationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -57,6 +57,7 @@ class Handler extends ExceptionHandler
             return response()->json(['errors' => $exception->errors()], 422);
         }
 
+        return response()->json(get_class($exception), 500);
         return response()->json(['errors' => $exception->getMessage()], $exception->status);
     }
 }

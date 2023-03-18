@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\CustomerController;
 
 /*
@@ -31,6 +32,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // customer resource routes
     Route::apiResource('customers', CustomerController::class);
+
+    // project resource routes
+    Route::apiResource('projects', ProjectController::class);
 
 });
 
