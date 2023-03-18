@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CustomerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +16,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// login route to get api token
+Route::post('login', [AuthController::class, 'login']);
+
+// the rest of the routes authenticated by sanctum
+Route::middleware(['auth:sanctum'])->group(function () {
+    // test route
+    Route::get('user', function (Request $request) {
+        return $request->user();
+    });
+
+    // logout route
+    Route::post('logout', [AuthController::class, 'logout']);
+
+    // customer resource routes
+    Route::apiResource('customers', CustomerController::class);
+
 });
+

@@ -2,7 +2,9 @@
 
 namespace App\Exceptions;
 
+use Dotenv\Exception\ValidationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Auth\Access\AuthorizationException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -44,5 +46,17 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof AuthorizationException) {
+            return response()->json(['errors' => 'You do not have permission to perform this operation.'], 403);
+        }
+        if ($exception instanceof ValidationException) {
+            return response()->json(['errors' => $exception->errors()], 422);
+        }
+
+        return response()->json(['errors' => $exception->getMessage()], $exception->status);
     }
 }
