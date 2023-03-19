@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -44,12 +45,22 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get all of the projects for the User
+     * Get all of the projects for the project manager
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function projects(): HasMany
+    public function managed_projects(): HasMany
     {
         return $this->hasMany(Project::class, 'project_manager_id');
+    }
+
+    /**
+     * Get all of the tasks for the developer
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function assigned_tasks(): HasMany
+    {
+        return $this->hasMany(Comment::class, 'foreign_key', 'local_key');
     }
 }

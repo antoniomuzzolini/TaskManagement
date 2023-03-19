@@ -24,13 +24,15 @@ class PermissionSeeder extends Seeder
         $create_projects = Permission::create(['name' => 'create projects']);
         $update_projects = Permission::create(['name' => 'update projects']);
         $update_own_projects = Permission::create(['name' => 'update own projects']);
-        $manage_tasks = Permission::create(['name' => 'manage own tasks']);
-        $assign_tasks = Permission::create(['name' => 'assign tasks']);
+        $create_tasks = Permission::create(['name' => 'create tasks']);
+        $create_own_project_tasks = Permission::create(['name' => 'create own project tasks']);
+        $update_tasks = Permission::create(['name' => 'update tasks']);
+        $update_own_project_tasks = Permission::create(['name' => 'update own project tasks']);
 
         $update_status_own_tasks = Permission::create(['name' => 'update status own tasks']);
 
         // assign permissions to roles
-        $pm_role->syncPermissions([$create_customers, $update_customers, $create_projects, $update_own_projects, $manage_tasks, $assign_tasks]);
+        $pm_role->syncPermissions([$create_customers, $update_customers, $create_projects, $update_own_projects, $create_own_project_tasks, $update_own_project_tasks]);
         $dev_role->syncPermissions([$update_status_own_tasks]);
     }
 }

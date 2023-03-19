@@ -27,7 +27,7 @@ class ProjectController extends Controller
     public function store(StoreProjectRequest $request)
     {
         $project = new Project($request->only(['title', 'description', 'customer_id']));
-        $project = auth()->user()->projects()->save($project);
+        $project = auth()->user()->managed_projects()->save($project);
         return response()->json($project);
     }
 

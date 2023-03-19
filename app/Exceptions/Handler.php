@@ -57,7 +57,7 @@ class Handler extends ExceptionHandler
             return response()->json(['errors' => $exception->errors()], 422);
         }
 
-        return response()->json(get_class($exception), 500);
-        return response()->json(['errors' => $exception->getMessage()], $exception->status);
+        // return response()->json([ 'class' => get_class($exception), 'e' => $exception ], 500);
+        return response()->json(['errors' => $exception->getMessage() ?? 'Generic error'], $exception->status ?? 500);
     }
 }

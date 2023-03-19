@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TaskController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\CustomerController;
 
@@ -35,6 +36,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // project resource routes
     Route::apiResource('projects', ProjectController::class);
+
+    // task resource routes
+    Route::apiResource('tasks', TaskController::class);
+    // task update status
+    Route::patch('tasks/{task}/status', [TaskController::class, 'updateStatus']);
 
 });
 

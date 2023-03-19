@@ -17,6 +17,11 @@ services:
             LARAVEL_SAIL: 1
             XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
             XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
+            MAIL_HOST: mailhog
+            MAIL_PORT: 1025
+            MAIL_USERNAME: null
+            MAIL_PASSWORD: null
+            MAIL_ENCRYPTION: null
         volumes:
             - '.:/var/www/html'
         networks:
@@ -47,6 +52,10 @@ services:
                 - '-p${DB_PASSWORD}'
             retries: 3
             timeout: 5s
+    mailhog:
+        image: mailhog/mailhog
+        ports:
+            - 8025:8025
 networks:
     sail:
         driver: bridge
