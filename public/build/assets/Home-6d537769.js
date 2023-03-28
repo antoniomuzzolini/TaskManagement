@@ -1,0 +1,1 @@
+import{o as e,c as o}from"./app-bc7374f8.js";import{_ as t}from"./_plugin-vue_export-helper-c27b6911.js";const r={setup(){}};function s(c,a,n,p,l,_){return e(),o("h1",null," Hello, Vuejs with Laravel ")}const u=t(r,[["render",s]]);export{u as default};

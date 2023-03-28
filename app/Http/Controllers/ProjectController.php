@@ -15,8 +15,12 @@ class ProjectController extends Controller
     public function index(Request $request)
     {
         $projects = Project::
-            when($request->has('customer_id'), fn($q) => $q->where('customer_id', $request->input('customer_id')))
+            with(['customer', 'project_manager'])
+            ->withCount('tasks')
+            ->when($request->has('customer_id'), fn($q) => $q->where('customer_id', $request->input('customer_id')))
             ->when($request->has('project_manager_id'), fn($q) => $q->where('project_manager_id', $request->input('project_manager_id')))
+            // ->when(auth()->user()->hasRole('project manager'), fn($q) => $q->where('project_manager_id', auth()->user()->id))
+            ->when(auth()->user()->hasRole('developer'), fn($q) => $q->whereHas('tasks', fn($q1) => $q1->where('developer_id', auth()->user()->id)))
             ->get();
         return response()->json($projects);
     }

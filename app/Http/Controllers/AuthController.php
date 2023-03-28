@@ -20,9 +20,18 @@ class AuthController extends Controller
         }
     }
 
-    public function logout()
+    public function permissions(Request $request)
     {
-        Auth::logout();
+        $user = $request->user();
+        $permissions = $user->getAllPermissions()->pluck('name');
+        return response()->json(['permissions' => $permissions]);
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::user()->tokens->each(function($token, $key) {
+            $token->delete();
+        });
 
         return response()->json(['message' => 'Logged out'], 200);
     }

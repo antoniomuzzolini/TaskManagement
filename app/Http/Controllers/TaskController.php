@@ -16,7 +16,8 @@ class TaskController extends Controller
     public function index(Request $request)
     {
         $tasks = Task::
-            when($request->has('project_id'), fn($q) => $q->where('project_id', $request->input('project_id')))
+            with(['project.customer', 'developer'])
+            ->when($request->has('project_id'), fn($q) => $q->where('project_id', $request->input('project_id')))
             ->when($request->has('developer_id'), fn($q) => $q->where('developer_id', $request->input('developer_id')))
             ->when(
                 $request->has('customer_id'), 
@@ -25,6 +26,8 @@ class TaskController extends Controller
                     fn ($q1) => $q1->where('customer_id', $request->input('customer_id'))
                 )
             )
+            // ->when(auth()->user()->hasRole('project manager'), fn($q) => $q->whereHas('project', fn($q1) => $q1->where('project_manager_id', auth()->user()->id)))
+            ->when(auth()->user()->hasRole('developer'), fn($q) => $q->where('developer_id', auth()->user()->id))
             ->get();
         return response()->json($tasks);
     }

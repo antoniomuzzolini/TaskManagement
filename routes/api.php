@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\CustomerController;
+use Spatie\Permission\Models\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,6 +28,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('user', function (Request $request) {
         return $request->user();
     });
+
+    Route::get('users/{role}', function (Request $request, $role) {
+        $users = Role::where('name', $role)->first()->users;
+        return response()->json($users);
+    });
+
+    Route::get('user/permissions', [AuthController::class, 'permissions']);
 
     // logout route
     Route::post('logout', [AuthController::class, 'logout']);
