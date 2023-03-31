@@ -11,7 +11,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="(project,i) in projects" :key="i" :class="{ 'bg-lime-200': project.project_manager_id == this.user_id }">
+            <tr v-for="(project,i) in projects" :key="i" :class="{ 'text-cyan-400 font-bold': project.project_manager_id == this.user_id }">
                 <td class="p-5">{{ project.title }}</td> 
                 <td class="p-5">{{ project.description }}</td>  
                 <td class="p-5">{{ project.customer.name }}</td>
@@ -19,7 +19,8 @@
                 <td class="p-5">
                     <router-link
                         :to="{ name: 'project_tasks', params: { project_id: project.id } }"
-                        class="text-sm text-gray-800 hover:text-blue-400 cursor-pointer"
+                        class="text-sm hover:text-cyan-400 cursor-pointer"
+                        :class="{ 'hover:text-white': project.project_manager_id == this.user_id }"
                         >{{ project.tasks_count }} (open)
                     </router-link>
                 </td>  
@@ -28,8 +29,9 @@
     </table>
     <div class="flex w-100 justify-center pt-10">
         <router-link 
+            v-if="can('create projects')"
             :to="getLinkWithCustomerId()"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            class="bg-cyan-400 hover:bg-white hover:text-cyan-400 font-bold py-2 px-4 rounded"
             >Create
         </router-link>
     </div>

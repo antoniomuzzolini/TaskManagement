@@ -13,20 +13,33 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="(task,i) in tasks" :key="i" :class="{ 'bg-lime-200': task.project.project_manager_id == this.user_id }">
+            <tr v-for="(task,i) in tasks" :key="i" :class="{ 'text-cyan-400 font-bold': task.project.project_manager_id == this.user_id }">
                 <td class="p-5">{{ task.title }}</td> 
                 <td class="p-5">{{ task.description }}</td>  
                 <td class="p-5">{{ task.priority }}</td> 
-                <td class="p-5">{{ task.status }}</td> 
+                <td class="p-5">
+                    <select
+                        id="status"
+                        class="bg-grey text-cyan-400 text-sm rounded-lg block w-full p-2.5"
+                        v-model="task.status"
+                        v-if="task.developer_id == this.user_id && is('developer')"
+                        @change="updateTaskStatus(task)">
+                        <option value="backlog">backlog</option>
+                        <option value="to do">to do</option>
+                        <option value="in progress">in progress</option>
+                        <option value="done">done</option>
+                    </select>
+                    <p v-else>{{ task.status }}</p>
+                </td>
                 <td class="p-5">{{ task.project.title }}</td>
                 <td class="p-5">{{ task.project.customer.name }}</td>
                 <td class="p-5">
                     <select
                         id="developer_id"
                         placeholder="(click to assign)"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        class="bg-grey text-cyan-400 text-sm rounded-lg block w-full p-2.5"
                         v-model="task.developer_id"
-                        v-if="task.project.project_manager_id == this.user_id"
+                        v-if="task.project.project_manager_id == this.user_id && is('project manager')"
                         @change="updateTask(task)">
                         <option v-for="developer in developers" :value="developer.id">
                             {{ developer.name }}
@@ -39,8 +52,9 @@
     </table>
     <div class="flex w-100 justify-center pt-10">
         <router-link 
+            v-if="can('create own project tasks')"
             :to="getLinkWithProjectId()"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            class="bg-cyan-400 hover:bg-white hover:text-cyan-400 font-bold py-2 px-4 rounded"
             >Create
         </router-link>
     </div>
@@ -102,8 +116,20 @@
                     console.dir(e)
                 }
             }
+            const updateTaskStatus = async (task) => {
+                try {
+                    const result = await axios.patch('/api/tasks/'+task.id+'/status', task)
+                    if (result.status === 200 )
+                        toast.success("Task status changed", {
+                            timeout: 2000
+                        });
+                } catch (e) {
+                    console.dir(e)
+                }
+            }
             return {
                 updateTask,
+                updateTaskStatus,
                 toast
             }
         }

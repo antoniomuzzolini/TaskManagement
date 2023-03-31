@@ -26,8 +26,9 @@ class TaskController extends Controller
                     fn ($q1) => $q1->where('customer_id', $request->input('customer_id'))
                 )
             )
-            // ->when(auth()->user()->hasRole('project manager'), fn($q) => $q->whereHas('project', fn($q1) => $q1->where('project_manager_id', auth()->user()->id)))
+            ->when(auth()->user()->hasRole('project manager') && $request->homepage, fn($q) => $q->whereHas('project', fn($q1) => $q1->where('project_manager_id', auth()->user()->id)))
             ->when(auth()->user()->hasRole('developer'), fn($q) => $q->where('developer_id', auth()->user()->id))
+            ->orderBy('priority')
             ->get();
         return response()->json($tasks);
     }

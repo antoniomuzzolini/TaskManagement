@@ -1,7 +1,7 @@
 <!--Login.vue-->
 <template>
     <div class="flex flex-col items-center p-10">
-        <h1 class="text-gray-600 py-5 font-bold text-3xl"> Login </h1>
+        <h1 class="text-white py-5 font-bold text-3xl"> Login </h1>
         <ul class="list-disc text-red-400" v-for="(value, index) in errors" :key="index" v-if="typeof errors === 'object'">
             <li>{{value[0]}}</li>
         </ul>
@@ -15,7 +15,7 @@
                 Email Address
             </label>
             <input
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-white bg-grey"
                 id="username"
                 type="text"
                 v-model="form.email"
@@ -30,7 +30,7 @@
                 Password
             </label>
             <input
-                class="shadow appearance-none border border-red rounded w-full py-2 px-3 text-grey-darker mb-3"
+                class="shadow appearance-none border border-red rounded w-full py-2 px-3 text-white bg-grey mb-3"
                 id="password"
                 type="password"
                 v-model="form.password"
@@ -39,7 +39,7 @@
         </div>
         <div class="flex items-center justify-center">
             <button
-                class="bg-blue-500 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded"
+                class="bg-cyan-400 hover:bg-white hover:text-cyan-400 font-bold py-2 px-4 rounded"
                 type="submit"
             >
                 Sign In
@@ -69,7 +69,8 @@
                         if (user.status === 200) {
                             localStorage.setItem('APP_USER_NAME', user.data.name)
                             localStorage.setItem('APP_USER_ID', user.data.id)
-                            await router.push('home')
+                            window.location.pathname = '/home';
+                            // await router.push('home')
                         }
                     }
                 } catch (e) {

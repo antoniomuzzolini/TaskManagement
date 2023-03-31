@@ -84,15 +84,32 @@ const router = createRouter({
         }
     ],
 })
-router.beforeEach((to, from, next) => {
-    if (to.path !== '/login' && !isAuthenticated()) {
-        return next({path: '/login'})
-    }
-    return next()
-})
 
-function isAuthenticated() {
-    return Boolean(localStorage.getItem('APP_USER_TOKEN'))
-}
+router.beforeEach((to, from, next) => {
+    if(to.name == 'login')
+        next();
+    else
+        axios.get('/api/user')
+            .then(response => {
+                if(response.data)
+                {
+                    if(to.name == 'login')
+                    {
+                        next({name: 'home'});
+                    }
+                    else
+                    {
+                        next();
+                    }
+                }
+                else
+                {
+                    next({name: 'login'});
+                }
+            })
+            .catch(error => {
+                next({name: 'login'});
+            });
+});
 
 export default router;
