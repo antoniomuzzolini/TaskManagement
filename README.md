@@ -1,17 +1,17 @@
-Scaricato il repo in locale, sarà sufficiente 
-- generare il file .env (configurare un mailer, es mailtrap)
-- lanciare i comandi
+requirements
+    docker, composer
+
+install & run
+    cp .env.example .env
+    php artisan key:generate
     composer install
-    sail up
-    sail artisan migrate --seed
+    vendor/bin/sail up
+    vendor/bin/sail php artisan migrate:fresh --seed
+    vendor/bin/sail npm install
+    vendor/bin/sail npm run dev
 
-Tutti gli utenti hanno password "password" (e quindi sono tutti ugualmente utilizzabili), in ogni caso ho creato due utenti test con email
-    pm@example.com
-    dev@example.com
-
-
-todo
-    permessi
-    homepage
-    grafica
-    errori
+navigation
+    MAILHOG: http://localhost:8025
+    APP: http://localhost/login
+    project manager user: pm@example.com / password
+    developer user: dev@example.com / password
