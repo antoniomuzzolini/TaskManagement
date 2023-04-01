@@ -62,6 +62,6 @@ class User extends Authenticatable
      */
     public function assigned_tasks(): HasMany
     {
-        return $this->hasMany(Comment::class, 'foreign_key', 'local_key');
+        return $this->hasMany(Task::class, 'developer_id');
     }
 }
